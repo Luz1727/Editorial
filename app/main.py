@@ -15,30 +15,37 @@ from app.routers.admin_dictamenes import router as admin_dictamenes_router
 from app.routers.editorial_chapters import router as editorial_chapters_router
 from app.routers.editorial_actions import router as editorial_actions_router
 from app.routers.dictaminador_chapters import router as dictaminador_chapters_router
-#from app.routers.dictaminador_chapters import router as dictaminador_chapters_router
 from app.routers.admin_chapter_versions import router as admin_chapter_versions_router
+from app.routers.admin_dictamen_documento import router as admin_dictamen_documento_router
 
-import app.models  # ✅ fuerza registro de modelos para SQLAlchemy
-# ✅ CREA LA APP (esto te faltaba)
+import app.models
+
 app = FastAPI()
 
-# ✅ CORS
+# ✅ CORS CORREGIDO - Agrega el puerto 5174 y permite todas las IPs locales
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=[
+        "http://localhost:5173", 
+        "http://127.0.0.1:5173",
+        "http://localhost:5174",  # ← AGREGAR ESTE (tu puerto actual)
+        "http://127.0.0.1:5174",  # ← AGREGAR ESTE
+        "http://192.168.1.26:5174",  # ← La IP de tu frontend (cámbiala)
+        "http://192.168.1.155:5174",  # ← La IP del backend (por si acaso)
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# ✅ carpetas
+# ✅ CARPETAS
 os.makedirs("storage/convocatorias", exist_ok=True)
 
-# ✅ estáticos
+# ✅ ESTÁTICOS
 app.mount("/api/storage", StaticFiles(directory="storage"), name="storage")
-# ✅ alias (porque tu frontend está llamando /api/api/storage)
 app.mount("/api/api/storage", StaticFiles(directory="storage"), name="storage_alias")
-# ✅ routers
+
+# ✅ ROUTERS
 app.include_router(auth_router, prefix="/api")
 app.include_router(dashboard_router, prefix="/api")
 app.include_router(convocatorias_router, prefix="/api")
@@ -51,9 +58,8 @@ app.include_router(admin_dictamenes_router, prefix="/api")
 app.include_router(editorial_chapters_router, prefix="/api")
 app.include_router(editorial_actions_router, prefix="/api")
 app.include_router(dictaminador_chapters_router, prefix="/api")
-#app.include_router(dictaminador_chapters_router, prefix="/api")
 app.include_router(admin_chapter_versions_router, prefix="/api")
-
+app.include_router(admin_dictamen_documento_router, prefix="/api")
 
 
 @app.get("/api/health")
