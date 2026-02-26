@@ -54,6 +54,7 @@ def to_out(db: Session, u: User) -> AdminUserOut:
 @router.get("", response_model=List[AdminUserOut])
 def list_users(
     role: Optional[str] = Query(default=None),
+    q: Optional[str] = Query(default=None), 
     db: Session = Depends(get_db),
     payload: dict = Depends(get_current_user),
 ):

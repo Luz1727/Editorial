@@ -29,6 +29,8 @@ class AdminChapterRowOut(BaseModel):
     status: ChapterStatus  # ← Usa la versión completa
     updated_at: str
     evaluator_email: Optional[str] = None 
+    deadline_at: Optional[str] = None
+    deadline_stage: Optional[str] = None
 
     class Config:
         from_attributes = True
@@ -39,3 +41,6 @@ class ChapterStatusUpdateIn(BaseModel):
 
 class CorreccionIn(BaseModel):
     comment: str
+
+class AdminChapterFolioUpdateIn(BaseModel):
+    folio: str

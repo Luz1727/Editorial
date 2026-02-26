@@ -17,6 +17,15 @@ from app.routers.editorial_actions import router as editorial_actions_router
 from app.routers.dictaminador_chapters import router as dictaminador_chapters_router
 from app.routers.admin_chapter_versions import router as admin_chapter_versions_router
 from app.routers.admin_dictamen_documento import router as admin_dictamen_documento_router
+from app.routers.admin_templates import router as admin_templates_router
+from app.routers import admin_dictamen_documento
+
+# app/main.py o donde tengas tus routers
+from app.routers import dictaminador
+
+# ... otros imports ...
+
+
 
 import app.models
 
@@ -60,7 +69,9 @@ app.include_router(editorial_actions_router, prefix="/api")
 app.include_router(dictaminador_chapters_router, prefix="/api")
 app.include_router(admin_chapter_versions_router, prefix="/api")
 app.include_router(admin_dictamen_documento_router, prefix="/api")
-
+app.include_router(admin_templates_router, prefix="/api")
+app.include_router(admin_dictamen_documento.router, prefix="/admin")
+app.include_router(dictaminador.router, prefix="/api")
 
 @app.get("/api/health")
 def health():

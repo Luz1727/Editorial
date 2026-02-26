@@ -10,6 +10,7 @@ DictamenTipo = Literal["INVESTIGACION", "DOCENCIA"]
 class AdminDictamenRowOut(BaseModel):
     id: int
     folio: str
+    chapterFolio: Optional[str] = None  # ✅ folio del capítulo (chapters.folio)
 
     capituloId: int
     capitulo: str

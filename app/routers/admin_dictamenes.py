@@ -12,6 +12,9 @@ from app.models.book import Book
 
 from app.schemas.admin_dictamenes import AdminDictamenRowOut
 
+
+
+
 router = APIRouter(prefix="/admin", tags=["admin-dictamenes"])
 
 
@@ -78,6 +81,7 @@ def list_dictamenes(db: Session = Depends(get_db), user=Depends(get_current_user
             AdminDictamenRowOut(
                 id=int(d.id),
                 folio=d.folio,
+                chapterFolio=getattr(c, "folio", None),  # ✅ AQUI
 
                 capituloId=int(c.id),
                 capitulo=c.title,
@@ -126,6 +130,7 @@ def generate_pdf(dictamen_id: int, db: Session = Depends(get_db), user=Depends(g
     return AdminDictamenRowOut(
         id=int(d.id),
         folio=d.folio,
+        chapterFolio=getattr(c, "folio", None),  # ✅ AQUI
         capituloId=int(c.id),
         capitulo=c.title,
         libro=b.name,
@@ -167,6 +172,7 @@ def mark_signed(dictamen_id: int, db: Session = Depends(get_db), user=Depends(ge
     return AdminDictamenRowOut(
         id=int(d.id),
         folio=d.folio,
+        chapterFolio=getattr(c, "folio", None),  # ✅ AQUI
         capituloId=int(c.id),
         capitulo=c.title,
         libro=b.name,
@@ -176,3 +182,6 @@ def mark_signed(dictamen_id: int, db: Session = Depends(get_db), user=Depends(ge
         status=d.status,
         updatedAt=str(d.updated_at or d.created_at),
     )
+    
+    
+    

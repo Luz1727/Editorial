@@ -97,17 +97,32 @@ def list_my_assigned_chapters(db: Session = Depends(get_db), user=Depends(get_cu
     out: list[DictChapterRowOut] = []
     for ch, b in rows:
         out.append(
-            DictChapterRowOut(
-                id=int(ch.id),
-                title=ch.title,
-                status=str(ch.status),
-                updated_at=ch.updated_at.isoformat() if ch.updated_at else "",
-                book_name=b.name if b else None,
-                author_name=getattr(ch, "author_name", None),
-                author_email=getattr(ch, "author_email", None),
-                file_path=getattr(ch, "file_path", None),
-            )
-        )
+    DictChapterRowOut(
+        id=int(ch.id),
+        title=ch.title,
+        status=str(ch.status),
+        updated_at=ch.updated_at.isoformat() if ch.updated_at else "",
+        book_name=b.name if b else None,
+        author_name=getattr(ch, "author_name", None),
+        author_email=getattr(ch, "author_email", None),
+
+        file_path=getattr(ch, "file_path", None),
+        corrected_file_path=getattr(ch, "corrected_file_path", None),
+        corrected_updated_at=(
+            ch.corrected_updated_at.isoformat()
+            if getattr(ch, "corrected_updated_at", None)
+            else None
+        ),
+
+        # ✅ NUEVO
+        deadline_at=(
+            ch.deadline_at.isoformat()
+            if getattr(ch, "deadline_at", None)
+            else None
+        ),
+        deadline_stage=getattr(ch, "deadline_stage", None),
+    )
+)
 
     return out
 
@@ -189,6 +204,18 @@ def update_my_chapter_status(
         author_name=getattr(ch, "author_name", None),
         author_email=getattr(ch, "author_email", None),
         file_path=getattr(ch, "file_path", None),
+        corrected_file_path=getattr(ch, "corrected_file_path", None),
+        corrected_updated_at=(
+            ch.corrected_updated_at.isoformat()
+            if getattr(ch, "corrected_updated_at", None)
+            else None
+        ),
+        deadline_at=(
+            ch.deadline_at.isoformat()
+            if getattr(ch, "deadline_at", None)
+            else None
+        ),
+        deadline_stage=getattr(ch, "deadline_stage", None),
     )
 
 

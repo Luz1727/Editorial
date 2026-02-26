@@ -8,7 +8,7 @@ from app.core.deps import get_current_user
 from app.models.user import User
 from app.models.book import Book
 from app.models.chapter import Chapter
-
+from sqlalchemy import distinct
 from app.schemas.admin_books import AdminBookOut, AdminChapterOut, AdminAuthorOut
 
 
@@ -152,3 +152,30 @@ def admin_book_chapters(
         )
         for c in chapters
     ]
+    
+
+@router.get("/books/{book_id}/authors")
+def admin_book_authors(
+    book_id: int,
+    db: Session = Depends(get_db),
+    user=Depends(get_current_user),
+):
+    _require_editorial(db, user)
+
+    ids = (
+        db.query(distinct(Chapter.author_id))
+        .filter(Chapter.book_id == book_id)
+        .all()
+    )
+    author_ids = [int(x[0]) for x in ids if x and x[0] is not None]
+    if not author_ids:
+        return []
+
+    authors = (
+        db.query(User)
+        .filter(User.id.in_(author_ids), User.role == "autor", User.active == 1)
+        .order_by(User.name.asc())
+        .all()
+    )
+
+    return [{"id": int(a.id), "name": a.name, "email": a.email} for a in authors]
