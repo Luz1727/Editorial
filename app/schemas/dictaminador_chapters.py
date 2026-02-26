@@ -33,7 +33,10 @@ class DictChapterRowOut(BaseModel):
     # ✅ NUEVO: versión corregida reenviada por el autor
     corrected_file_path: Optional[str] = None
     corrected_updated_at: Optional[str] = None
-
+    
+    deadline_at: Optional[str] = None
+    deadline_stage: Optional[str] = None
+    
     class Config:
         from_attributes = True
 
