@@ -1,7 +1,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, DeclarativeBase
 from app.core.config import DATABASE_URL
-
+import pymysql
+pymysql.install_as_MySQLdb()  # Esto hace que SQLAlchemy use PyMySQL como driver para MySQL
 engine = create_engine(
     DATABASE_URL,
     pool_pre_ping=True,
