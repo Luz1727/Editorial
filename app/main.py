@@ -40,6 +40,7 @@ allow_origins=[
     #"http://192.168.1.26:5173",
     "https://frontend-6whf.vercel.app/login",
     "https://frontend-luz1727s-projects.vercel.app",
+    "https://frontend-6whf.vercel.app",
     "https://frontend-6whf-git-main-luz1727s-projects.vercel.app/login",
     "https://frontend-6whf-bnpneq3m6-luz1727s-projects.vercel.app/login"
 ],
