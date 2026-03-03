@@ -1,5 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional, Literal
+from datetime import datetime  # ✅ agrega esto
+
 
 # ✅ Versión extendida con TODOS los status
 ChapterStatus = Literal[
@@ -36,6 +38,8 @@ class DictChapterRowOut(BaseModel):
     
     deadline_at: Optional[str] = None
     deadline_stage: Optional[str] = None
+     # ✅ NUEVO: fecha límite que dictaminador asigna al autor
+    author_deadline_at: Optional[str] = None
     
     class Config:
         from_attributes = True
@@ -43,3 +47,4 @@ class DictChapterRowOut(BaseModel):
 class DictChapterStatusUpdateIn(BaseModel):
     status: ChapterStatus  # ← Ahora acepta todos
     comment: Optional[str] = None
+    author_deadline_at: Optional[datetime] = None
